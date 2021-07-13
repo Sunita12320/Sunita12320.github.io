@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Portfolio</title>
+    <style>
+        .main{
+            margin:10px 10px;
+            text-align:center;
+            background-color: orange;
+            padding-bottom: 90px;
+            padding-top: 10px;
+           
+        }
+        img {
+  border-radius: 50%;
+}
+    </style>
+</head>
+<body >
+    <div id="loader">
+         LOADING ...
+    </div>
+    <div class="main" id ="mainContainer" hidden>
+   <img  height="150" widht="150" id="profileImage"> 
+   <h2 id="fullName"></h2>
+   <p id ="bio"></p>
+   <h5 id="followersInformation"></h5>
+    <h3>My projects</h5>
+   <h5 id="projectName"></h5>
+   <p>
+       Check me on <a id="githubLink">Github</a>
+   </p>
+</div>
+<script>
+    fetch("https://api.github.com/users/Sunita12320")
+        .then(response => response.json())
+        .then(function(data){
+            console.log(data)
+
+            let followersCount = data['followers']
+            let followersInfo = `I have been followed by ${followersCount} person on GitHub`
+            document.getElementById('profileImage').src=data['avatar_url']
+            document.getElementById('fullName').textContent=data['name']
+            document.getElementById('bio').textContent=data['bio']
+            document.getElementById('followersInformation').textContent= followersInfo
+            document.getElementById('githubLink').href=data['html_url']
+
+            document.getElementById('mainContainer').hidden = false
+            document.getElementById('loader').hidden = true
+
+        })
+
+        fetch("https://api.github.com/users/Sunita12320/repos").then(response => response.json()).then(function (data1) {
+
+console.log(data1)
+let m = data1.length;
+var n = parseInt(m);
+let repoName = "";
+for(i = 0;i < n; i++ )
+{
+repoName += " Repo " + i +": "+ data1[i]['name'] +"<br>"+ "<br>";
+}
+document.getElementById('projectName').innerHTML = repoName
+
+})
+
+</script>
+</body>
+</html>
